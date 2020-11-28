@@ -21,13 +21,12 @@ public class UserProfileBusinessService {
 
     UserAuthTokenEntity userAuthTokenEntity = userDao.getUserAuthToken(authorizationToken);
     UserEntity userEntity = userDao.getUser(userUuid);
-
-    if (userAuthTokenEntity.getLogoutAt() != null || userAuthTokenEntity.getExpiresAt()
+    if (userAuthTokenEntity == null) {
+      throw new AuthorizationFailedException("ATHR-001", "User has not signed in.");
+    } else if (userAuthTokenEntity.getLogoutAt() != null || userAuthTokenEntity.getExpiresAt()
         .isAfter(ZonedDateTime.now())) {
       throw new AuthorizationFailedException("ATHR-002",
-          "User is signed out.Sign in first to get user details");
-    } else if (userAuthTokenEntity == null) {
-      throw new AuthorizationFailedException("ATHR-001", "User has not signed in");
+          "User is signed out.Sign in first to get user details.");
     } else if (userEntity == null) {
       throw new UserNotFoundException("USR-001", "User with entered uuid does not exist");
     } else {
