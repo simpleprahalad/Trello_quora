@@ -1,185 +1,185 @@
 package com.upgrad.quora.service.entity;
 
+
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "users", schema = "quora")
 @NamedQueries(
-        {
-                @NamedQuery(name = "userByUuid", query = "select u from UserEntity u where u.uuid = :uuid"),
-                @NamedQuery(name = "userByEmail", query = "select u from UserEntity u where u.email =:email")
-        }
+    {
+        @NamedQuery(name = "userByUuid", query = "select u from UserEntity u where u.uuid = :uuid"),
+        @NamedQuery(name = "userByEmail", query = "select u from UserEntity u where u.email=:email")
+    }
 )
 
-public class UserEntity {
-    @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class UserEntity implements Serializable {
 
-    @Column(name = "UUID")
-    @Size(max = 64)
-    private String uuid;
+  @Id
+  @Column(name = "ID")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
 
-    @Column(name = "FIRSTNAME")
-    @NotNull
-    @Size(max = 200)
-    private String firstName;
+  @Column(name = "UUID")
+  @Size(max = 64)
+  private String uuid;
 
-    @Column(name = "LASTNAME")
-    @NotNull
-    @Size(max = 200)
-    private String lastName;
+  @Column(name = "FIRSTNAME")
+  @NotNull
+  private String firstname;
 
-    @Column(name = "USERNAME")
-    @NotNull
-    @Size(max = 200)
-    private String userName;
+  @Column(name = "LASTNAME")
+  @NotNull
+  private String lastname;
 
-    @Column(name = "EMAIL")
-    @NotNull
-    @Size(max = 200)
-    private String email;
+  @Column(name = "USERNAME")
+  @NotNull
+  private String username;
 
-    //@ToStringExclude
-    @Column(name = "PASSWORD")
-    private String password;
+  @Column(name = "EMAIL")
+  @NotNull
+  private String email;
 
+  @Column(name = "PASSWORD")
+  @NotNull
+  private String password;
 
-    @Column(name = "SALT")
-    @NotNull
-    @Size(max = 200)
-    //@ToStringExclude
-    private String salt;
+  @Column(name = "SALT")
+  @NotNull
+  private String salt;
 
-    @Column(name = "COUNTRY")
-    @NotNull
-    @Size(max = 100)
-    private String country;
+  @Column(name = "COUNTRY")
+  private String country;
 
-    public Integer getId() {
-        return id;
-    }
+  @Column(name = "ABOUTME")
+  private String aboutme;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+  @Column(name = "CONTACTNUMBER")
+  private String contactnumber;
 
-    public String getUuid() {
-        return uuid;
-    }
+  @Column(name = "DOB")
+  private String dob;
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
+  @Column(name = "ROLE")
+  private String role;
 
-    public String getFirstName() {
-        return firstName;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    public String getLastName() {
-        return lastName;
-    }
+  public String getUuid() {
+    return uuid;
+  }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
+  }
 
-    public String getUserName() {
-        return userName;
-    }
+  public String getFirstname() {
+    return firstname;
+  }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+  public void setFirstname(String firstname) {
+    this.firstname = firstname;
+  }
 
-    public String getEmail() {
-        return email;
-    }
+  public String getLastname() {
+    return lastname;
+  }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  public void setLastname(String lastname) {
+    this.lastname = lastname;
+  }
 
-    public String getPassword() {
-        return password;
-    }
+  public String getUsername() {
+    return username;
+  }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-    public String getSalt() {
-        return salt;
-    }
+  public String getEmail() {
+    return email;
+  }
 
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-    public String getCountry() {
-        return country;
-    }
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
+  public String getPassword() {
+    return password;
+  }
 
-    public String getAboutMe() {
-        return aboutMe;
-    }
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-    public void setAboutMe(String aboutMe) {
-        this.aboutMe = aboutMe;
-    }
+  public String getSalt() {
+    return salt;
+  }
 
-    public String getDob() {
-        return dob;
-    }
+  public void setSalt(String salt) {
+    this.salt = salt;
+  }
 
-    public void setDob(String dob) {
-        this.dob = dob;
-    }
+  public String getCountry() {
+    return country;
+  }
 
-    public String getContactNumber() {
-        return contactNumber;
-    }
+  public void setCountry(String country) {
+    this.country = country;
+  }
 
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
-    }
+  public String getAboutme() {
+    return aboutme;
+  }
 
-    //@ToStringExclude
-    @Column(name = "ABOUTME")
-    @NotNull
-    @Size(max = 300)
-    private String aboutMe;
+  public void setAboutme(String aboutme) {
+    this.aboutme = aboutme;
+  }
 
-    @Column(name = "DOB")
-    @NotNull
-    @Size(max = 50)
-    private String dob;
+  public String getContactnumber() {
+    return contactnumber;
+  }
 
-    public String getRole() {
-        return role;
-    }
+  public void setContactnumber(String contactnumber) {
+    this.contactnumber = contactnumber;
+  }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+  public String getDob() {
+    return dob;
+  }
 
-    @Column(name = "ROLE")
-    private String role;
+  public void setDob(String dob) {
+    this.dob = dob;
+  }
 
-    @Column(name = "CONTACTNUMBER")
-    @NotNull
-    @Size(max = 50)
-    private String contactNumber;
+  public String getRole() {
+    return role;
+  }
 
+  public void setRole(String role) {
+    this.role = role;
+  }
 
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder().append(this).hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+  }
 }

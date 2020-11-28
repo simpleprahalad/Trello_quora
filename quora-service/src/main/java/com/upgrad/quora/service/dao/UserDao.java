@@ -10,8 +10,9 @@ import javax.persistence.PersistenceContext;
 
 @Repository
 public class UserDao {
+
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     public UserEntity createUser(UserEntity userEntity) {
         entityManager.persist(userEntity);
@@ -27,9 +28,9 @@ public class UserDao {
         }
     }
 
-    public UserAuthTokenEntity getUserAuthToken(final String accessToken) {
+    public UserEntity getUserByEmail(final String email) {
         try {
-            return entityManager.createNamedQuery("userAuthTokenByAccessToken", UserAuthTokenEntity.class).setParameter("accessToken", accessToken).getSingleResult();
+            return entityManager.createNamedQuery("userByEmail", UserEntity.class).setParameter("email", email).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         }
@@ -41,5 +42,23 @@ public class UserDao {
             entityManager.remove(userEntity);
         }
         return userEntity;
+    }
+  
+    public UserAuthTokenEntity createAuthToken(final UserAuthTokenEntity userAuthTokenEntity) {
+        entityManager.persist(userAuthTokenEntity);
+        return userAuthTokenEntity;
+    }
+
+    public void updateUser(final UserEntity updatedUserEntity) {
+        entityManager.merge(updatedUserEntity);
+    }
+
+    public UserAuthTokenEntity getUserAuthToken(final String accessToken) {
+        try {
+            return entityManager.createNamedQuery("userAuthTokenByAccessToken", UserAuthTokenEntity.class).setParameter("accessToken", accessToken).getSingleResult();
+        } catch (NoResultException nre) {
+
+            return null;
+        }
     }
 }
