@@ -11,7 +11,6 @@ import javax.persistence.PersistenceContext;
 @Repository
 public class UserDao {
 
-
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -37,6 +36,14 @@ public class UserDao {
         }
     }
 
+    public UserEntity userDelete(final String userUuid) {
+        UserEntity userEntity = getUser(userUuid);
+        if(userEntity != null) {
+            entityManager.remove(userEntity);
+        }
+        return userEntity;
+    }
+  
     public UserAuthTokenEntity createAuthToken(final UserAuthTokenEntity userAuthTokenEntity) {
         entityManager.persist(userAuthTokenEntity);
         return userAuthTokenEntity;
@@ -46,7 +53,6 @@ public class UserDao {
         entityManager.merge(updatedUserEntity);
     }
 
-
     public UserAuthTokenEntity getUserAuthToken(final String accessToken) {
         try {
             return entityManager.createNamedQuery("userAuthTokenByAccessToken", UserAuthTokenEntity.class).setParameter("accessToken", accessToken).getSingleResult();
@@ -54,6 +60,5 @@ public class UserDao {
 
             return null;
         }
-
     }
 }
