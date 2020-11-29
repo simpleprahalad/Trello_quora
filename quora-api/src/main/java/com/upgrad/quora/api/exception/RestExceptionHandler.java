@@ -16,8 +16,8 @@ import org.springframework.web.context.request.WebRequest;
 public class RestExceptionHandler {
 
     @ExceptionHandler(SignUpRestrictedException.class)
-    public ResponseEntity<ErrorResponse> signUpRestrictedException(SignUpRestrictedException ex, WebRequest request){
-        return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(ex.getCode()).message(ex.getErrorMessage()), HttpStatus.ALREADY_REPORTED);
+    public ResponseEntity<ErrorResponse> signUpRestrictedException(SignUpRestrictedException exe, WebRequest request) {
+        return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()).rootCause("User already exist with the provided information.Try to enter unique email/username"), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(AuthenticationFailedException.class)
@@ -34,17 +34,17 @@ public class RestExceptionHandler {
         );
     }
 
-  @ExceptionHandler(UserNotFoundException.class)
-  public ResponseEntity<ErrorResponse> userNotFoundFailedException(UserNotFoundException exe, WebRequest request){
-    return new ResponseEntity<ErrorResponse>(
-        new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()), HttpStatus.NOT_FOUND
-    );
-  }
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> userNotFoundFailedException(UserNotFoundException exe, WebRequest request) {
+        return new ResponseEntity<ErrorResponse>(
+                new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()), HttpStatus.NOT_FOUND
+        );
+    }
 
-  @ExceptionHandler(AuthorizationFailedException.class)
-  public ResponseEntity<ErrorResponse> authorizationFailedException(AuthorizationFailedException exe, WebRequest request){
-    return new ResponseEntity<ErrorResponse>(
-        new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()), HttpStatus.UNAUTHORIZED
-    );
-  }
+    @ExceptionHandler(AuthorizationFailedException.class)
+    public ResponseEntity<ErrorResponse> authorizationFailedException(AuthorizationFailedException exe, WebRequest request) {
+        return new ResponseEntity<ErrorResponse>(
+                new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()), HttpStatus.UNAUTHORIZED
+        );
+    }
 }
