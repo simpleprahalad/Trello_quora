@@ -24,7 +24,7 @@ public class UserController {
     private AuthenticationService authenticationService;
 
     @RequestMapping(method= RequestMethod.POST,path="/user/signin",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<SigninResponse> login(@RequestHeader("authorization") final String authorization) throws AuthenticationFailedException {
+    public ResponseEntity<SigninResponse> signIn(@RequestHeader("authorization") final String authorization) throws AuthenticationFailedException {
 
         //System.out.println(Arrays.toString(Base64.getDecoder().decode(authorization.split("Basic ")[0])));
         byte[] decode = Base64.getDecoder().decode(authorization.split("Basic ")[1]);
