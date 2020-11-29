@@ -19,12 +19,20 @@ public class SignupBusinessService {
     @Transactional(propagation = Propagation.REQUIRED)
     public UserEntity signup(UserEntity userEntity) {
         String password = userEntity.getPassword();
-        if(password == null){
+        if (password == null) {
             password = "proman@123";
         }
         String[] encryptedText = cryptographyProvider.encrypt(password);
         userEntity.setSalt(encryptedText[0]);
         userEntity.setPassword(encryptedText[1]);
         return userDao.createUser(userEntity);
+    }
+
+    public UserEntity getUser(final String userName) {
+        return userDao.getUserByUserName(userName);
+    }
+
+    public UserEntity getEmail(final String email) {
+        return userDao.getUserByEmail(email);
     }
 }
