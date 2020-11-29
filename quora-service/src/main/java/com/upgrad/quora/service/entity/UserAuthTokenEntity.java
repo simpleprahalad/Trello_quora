@@ -8,14 +8,16 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 
 @Entity
-@Table(name="user_auth",schema = "quora")
+@Table(name = "user_auth", schema = "quora")
 @NamedQueries({
-        @NamedQuery(name = "userAuthTokenByAccessToken", query = "select ut from UserAuthTokenEntity ut where ut.accessToken = :accessToken ")
+    @NamedQuery(name = "userAuthTokenByAccessToken", query = "select ut from UserAuthTokenEntity ut where ut.accessToken = :accessToken ")
 })
-public class UserAuthTokenEntity {
+
+public class UserAuthTokenEntity implements Serializable {
 
     @Id
     @Column(name = "ID")
@@ -115,6 +117,5 @@ public class UserAuthTokenEntity {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
-
     }
 }

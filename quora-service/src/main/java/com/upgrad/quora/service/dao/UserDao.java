@@ -14,7 +14,7 @@ public class UserDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public UserEntity createUser(UserEntity userEntity){
+    public UserEntity createUser(UserEntity userEntity) {
         entityManager.persist(userEntity);
         return userEntity;
     }
@@ -23,34 +23,50 @@ public class UserDao {
         try{
             return entityManager.createNamedQuery("userByuserName",UserEntity.class).setParameter("username",userName).getSingleResult();
         }catch(NoResultException nre){
+          return null;
+        }
+      
+    public UserEntity getUser(final String userUuid) {
+        try {
+            return entityManager.createNamedQuery("userByUuid", UserEntity.class).setParameter("uuid", userUuid)
+                    .getSingleResult();
+        } catch (NoResultException nre) {
             return null;
         }
     }
 
-    public UserEntity getUserByEmail(final String email){
-        try{
-            return entityManager.createNamedQuery("userByEmail",UserEntity.class).setParameter("email",email).getSingleResult();
-        }catch(NoResultException nre){
+    public UserEntity getUserByEmail(final String email) {
+        try {
+            return entityManager.createNamedQuery("userByEmail", UserEntity.class).setParameter("email", email).getSingleResult();
+        } catch (NoResultException nre) {
             return null;
         }
     }
 
-    public UserAuthTokenEntity createAuthToken(final UserAuthTokenEntity userAuthTokenEntity){
-       entityManager.persist(userAuthTokenEntity);
-       return userAuthTokenEntity;
+    public UserEntity userDelete(final String userUuid) {
+        UserEntity userEntity = getUser(userUuid);
+        if(userEntity != null) {
+            entityManager.remove(userEntity);
+        }
+        return userEntity;
+    }
+  
+    public UserAuthTokenEntity createAuthToken(final UserAuthTokenEntity userAuthTokenEntity) {
+        entityManager.persist(userAuthTokenEntity);
+        return userAuthTokenEntity;
     }
 
-    public UserAuthTokenEntity getUserAuthToken(final String accessToken){
-     try{
-         return entityManager.createNamedQuery("userAuthTokenByAccessToken",UserAuthTokenEntity.class).setParameter("accessToken",accessToken).getSingleResult();
-     } catch (NoResultException nre) {
+    public void updateUser(final UserEntity updatedUserEntity) {
+        entityManager.merge(updatedUserEntity);
+    }
+
+    public UserAuthTokenEntity getUserAuthToken(final String accessToken) {
+        try {
+            return entityManager.createNamedQuery("userAuthTokenByAccessToken", UserAuthTokenEntity.class).setParameter("accessToken", accessToken).getSingleResult();
+        } catch (NoResultException nre) {
+
             return null;
         }
-    }
-
-    public void updateAuthToken(final UserAuthTokenEntity authTokenEntity) {
-        entityManager.merge(authTokenEntity);
-
     }
 
 }
