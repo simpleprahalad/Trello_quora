@@ -19,6 +19,13 @@ public class UserDao {
         return userEntity;
     }
 
+    public UserEntity getUserByUserName(final String userName){
+        try{
+            return entityManager.createNamedQuery("userByuserName",UserEntity.class).setParameter("username",userName).getSingleResult();
+        }catch(NoResultException nre){
+          return null;
+        }
+      
     public UserEntity getUser(final String userUuid) {
         try {
             return entityManager.createNamedQuery("userByUuid", UserEntity.class).setParameter("uuid", userUuid)
@@ -61,4 +68,5 @@ public class UserDao {
             return null;
         }
     }
+
 }

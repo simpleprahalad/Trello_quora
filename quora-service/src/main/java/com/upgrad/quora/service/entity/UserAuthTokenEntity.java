@@ -16,13 +16,17 @@ import java.time.ZonedDateTime;
 @NamedQueries({
     @NamedQuery(name = "userAuthTokenByAccessToken", query = "select ut from UserAuthTokenEntity ut where ut.accessToken = :accessToken ")
 })
-public class UserAuthTokenEntity implements Serializable {
 
+public class UserAuthTokenEntity implements Serializable {
 
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name="UUID")
+    @Size(max=64)
+    private String uuid;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
@@ -90,6 +94,14 @@ public class UserAuthTokenEntity implements Serializable {
 
     public void setLogoutAt(ZonedDateTime logoutAt) {
         this.logoutAt = logoutAt;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     @Override

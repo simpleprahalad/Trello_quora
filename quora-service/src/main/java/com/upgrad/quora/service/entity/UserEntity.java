@@ -1,6 +1,5 @@
 package com.upgrad.quora.service.entity;
 
-
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
