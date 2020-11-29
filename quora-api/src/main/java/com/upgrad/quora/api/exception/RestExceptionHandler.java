@@ -3,6 +3,7 @@ package com.upgrad.quora.api.exception;
 
 import com.upgrad.quora.api.model.ErrorResponse;
 import com.upgrad.quora.service.exception.AuthorizationFailedException;
+import com.upgrad.quora.service.exception.SignOutRestrictedException;
 import com.upgrad.quora.service.exception.SignUpRestrictedException;
 import com.upgrad.quora.service.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -15,8 +16,8 @@ import org.springframework.web.context.request.WebRequest;
 public class RestExceptionHandler {
 
     @ExceptionHandler(SignUpRestrictedException.class)
-    public ResponseEntity<ErrorResponse> signUpRestrictedException(SignUpRestrictedException ex, WebRequest request) {
-        return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(ex.getCode()).message(ex.getErrorMessage()).rootCause("User with requested attribute already exist in the database") ,HttpStatus.CONFLICT);
+    public ResponseEntity<ErrorResponse> signUpRestrictedException(SignUpRestrictedException exe, WebRequest request) {
+        return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()).rootCause("User with requested attribute already exist in the database"), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
@@ -32,4 +33,5 @@ public class RestExceptionHandler {
                 new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()), HttpStatus.UNAUTHORIZED
         );
     }
+
 }

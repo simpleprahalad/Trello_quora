@@ -1,5 +1,7 @@
 package com.upgrad.quora.api.controller;
 
+import com.upgrad.quora.api.model.SignupUserRequest;
+import com.upgrad.quora.api.model.SignupUserResponse;
 import com.upgrad.quora.service.business.SignupBusinessService;
 import com.upgrad.quora.service.entity.UserEntity;
 import com.upgrad.quora.service.exception.SignUpRestrictedException;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,11 +24,11 @@ public class UserController {
     SignupBusinessService signupBusinessService;
 
     @RequestMapping(method = RequestMethod.POST, path = "/user/signup", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<com.upgrad.quora.api.model.SignupUserResponse> signup(final com.upgrad.quora.api.model.SignupUserRequest signupUserRequest) throws SignUpRestrictedException {
+    public ResponseEntity<com.upgrad.quora.api.model.SignupUserResponse> signup(final SignupUserRequest signupUserRequest) throws SignUpRestrictedException {
 
-        if (signupBusinessService.getUser(signupUserRequest.getUserName()) != null)
+        if (signupBusinessService.getUserByUserName(signupUserRequest.getUserName()) != null)
             throw new SignUpRestrictedException("SGR-001", "Try any other Username, this Username has already been taken");
-        else if (signupBusinessService.getEmail(signupUserRequest.getEmailAddress()) != null)
+        else if (signupBusinessService.getUserByEmail(signupUserRequest.getEmailAddress()) != null)
             throw new SignUpRestrictedException("SGR-002", "This user has already been registered, try with any other emailId");
         else {
             final UserEntity userEntity = new UserEntity();
@@ -41,8 +44,8 @@ public class UserController {
             userEntity.setContactnumber(signupUserRequest.getContactNumber());
             userEntity.setRole("nonadmin");
             final UserEntity createdUserEntity = signupBusinessService.signup(userEntity);
-            com.upgrad.quora.api.model.SignupUserResponse userResponse = new com.upgrad.quora.api.model.SignupUserResponse().id(createdUserEntity.getUuid()).status("USER SUCCESSFULLY REGISTERED");
-            return new ResponseEntity<com.upgrad.quora.api.model.SignupUserResponse>(userResponse, HttpStatus.CREATED);
+            SignupUserResponse userResponse = new SignupUserResponse().id(createdUserEntity.getUuid()).status("USER SUCCESSFULLY REGISTERED");
+            return new ResponseEntity<SignupUserResponse>(userResponse, HttpStatus.CREATED);
 
         }
 

@@ -20,7 +20,7 @@ public class SignupBusinessService {
     public UserEntity signup(UserEntity userEntity) {
         String password = userEntity.getPassword();
         if (password == null) {
-            password = "proman@123";
+            password = "quora@123";
         }
         String[] encryptedText = cryptographyProvider.encrypt(password);
         userEntity.setSalt(encryptedText[0]);
@@ -28,11 +28,11 @@ public class SignupBusinessService {
         return userDao.createUser(userEntity);
     }
 
-    public UserEntity getUser(final String userName) {
+    public UserEntity getUserByUserName(final String userName) {
         return userDao.getUserByUserName(userName);
     }
 
-    public UserEntity getEmail(final String email) {
+    public UserEntity getUserByEmail(final String email) {
         return userDao.getUserByEmail(email);
     }
 }
