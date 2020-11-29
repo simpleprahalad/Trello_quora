@@ -13,11 +13,6 @@ public class QuestionDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public QuestionEntity createQuestion(QuestionEntity questionEntity) {
-        entityManager.persist(questionEntity);
-        return questionEntity;
-    }
-
     public List<QuestionEntity> getAllQuestions(){
         TypedQuery<QuestionEntity> query = entityManager.createQuery("SELECT q FROM QuestionEntity q", QuestionEntity.class);
         List<QuestionEntity> allQuestions = query.getResultList();
