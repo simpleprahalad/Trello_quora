@@ -1,6 +1,7 @@
 package com.upgrad.quora.api.controller;
 
 
+import com.upgrad.quora.api.model.QuestionDetailsResponse;
 import com.upgrad.quora.api.model.QuestionEditRequest;
 import com.upgrad.quora.api.model.QuestionRequest;
 import com.upgrad.quora.api.model.QuestionResponse;
@@ -9,6 +10,12 @@ import com.upgrad.quora.service.entity.QuestionEntity;
 import com.upgrad.quora.service.exception.AuthorizationFailedException;
 import com.upgrad.quora.service.exception.InvalidQuestionException;
 import com.upgrad.quora.service.exception.UserNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,17 +29,20 @@ public class QuestionController {
     @Autowired
     private QuestionBusinessService questionBusinessService;
 
-    @RequestMapping(method = RequestMethod.POST,
-            path = "/question/create",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<QuestionResponse> createQuestion(final QuestionRequest questionRequest,
-                                                           @RequestHeader("authorization") final String authorization)
-            throws AuthorizationFailedException, UserNotFoundException {
-        QuestionEntity questionEntity = questionBusinessService.createQuestion(questionRequest.getContent(), authorization);
+    @RequestMapping(method = RequestMethod.GET,
+        path = "/question/all",
+        produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<QuestionDetailsResponse>> getAllQuestions(@RequestHeader("authorization") final String authorization)
+        throws AuthorizationFailedException{
+        List<QuestionEntity> allQuestions = questionBusinessService.getAllQuestions(authorization);
+        List<QuestionDetailsResponse> allQuestionResponse = new ArrayList<>();
 
-        final QuestionResponse questionResponse = new QuestionResponse().id(questionEntity.getUuid()).status("QUESTION CREATED");
-        return new ResponseEntity<>(questionResponse, HttpStatus.OK);
+        for (QuestionEntity question: allQuestions){
+            allQuestionResponse.add(new QuestionDetailsResponse().id(question.getUuid())
+                .content(question.getContent()));
+        }
+
+        return new ResponseEntity<>(allQuestionResponse, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT,
