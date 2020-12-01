@@ -58,7 +58,7 @@ public class QuestionController {
         final QuestionResponse questionResponse = new QuestionResponse().id(questionEntity.getUuid()).status("QUESTION EDITED");
         return new ResponseEntity<>(questionResponse, HttpStatus.OK);
     }
-
+  
     @RequestMapping(method = RequestMethod.DELETE,
             path = "/question/edit/{questionId}",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -70,5 +70,4 @@ public class QuestionController {
         final QuestionResponse questionResponse = new QuestionResponse().id(questionEntity.getUuid()).status("QUESTION DELETED");
         return new ResponseEntity<>(questionResponse, HttpStatus.OK);
     }
-
 }

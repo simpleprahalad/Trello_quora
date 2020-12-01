@@ -50,7 +50,7 @@ public class QuestionBusinessService {
         if (userAuthTokenEntity == null) {
             throw new AuthorizationFailedException("ATHR-001", "User has not signed in.");
         } else if (userAuthTokenEntity.getLogoutAt() != null || userAuthTokenEntity.getExpiresAt()
-                .isBefore(ZonedDateTime.now())) {
+                 .isBefore(ZonedDateTime.now())) {
             throw new AuthorizationFailedException("ATHR-002",
                     "User is signed out.Sign in first to edit the question");
         }
@@ -93,4 +93,5 @@ public class QuestionBusinessService {
 
         return questionEntity;
     }
+
 }
