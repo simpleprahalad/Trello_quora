@@ -32,4 +32,8 @@ public class QuestionDao {
     public void updateQuestion(QuestionEntity questionEntity) {
         entityManager.merge(questionEntity);
     }
+
+    public void deleteQuestion(QuestionEntity questionEntity) {
+        entityManager.remove(questionEntity);
+    }
 }
