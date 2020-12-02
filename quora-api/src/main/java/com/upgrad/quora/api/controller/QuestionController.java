@@ -1,6 +1,5 @@
 package com.upgrad.quora.api.controller;
 
-
 import com.upgrad.quora.api.model.QuestionDetailsResponse;
 import com.upgrad.quora.api.model.QuestionEditRequest;
 import com.upgrad.quora.api.model.QuestionRequest;
@@ -29,6 +28,23 @@ public class QuestionController {
     @Autowired
     private QuestionBusinessService questionBusinessService;
 
+    @RequestMapping(method = RequestMethod.POST,
+        path = "question/all/{userId}",
+        consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+        produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<QuestionDetailsResponse>> getAllQuestionsByUser(@PathVariable("userId") final String userUuid,
+        @RequestHeader("authorization") final String authorization)
+        throws AuthorizationFailedException, UserNotFoundException {
+        List<QuestionEntity> allQuestionsByUser = questionBusinessService.getAllQuestionsByUser(authorization, userUuid);
+        List<QuestionDetailsResponse> allQuestionByUserResponse = new ArrayList<>();
+
+        for (QuestionEntity question: allQuestionsByUser){
+            allQuestionByUserResponse.add(new QuestionDetailsResponse().id(question.getUuid())
+                .content(question.getContent()));
+        }
+        return new ResponseEntity<>(allQuestionByUserResponse, HttpStatus.OK);
+    }
+  
     @RequestMapping(method = RequestMethod.GET,
         path = "/question/all",
         produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
