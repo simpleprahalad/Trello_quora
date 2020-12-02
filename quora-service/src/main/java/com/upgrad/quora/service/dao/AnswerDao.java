@@ -3,7 +3,6 @@ package com.upgrad.quora.service.dao;
 import com.upgrad.quora.service.entity.AnswerEntity;
 import javax.persistence.NoResultException;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -25,6 +24,11 @@ public class AnswerDao {
     public AnswerEntity updateAnswer(final AnswerEntity updatedAnswerEntity) {
         entityManager.merge(updatedAnswerEntity);
         return updatedAnswerEntity;
+    }
+  
+    public AnswerEntity createAnswer(AnswerEntity answerEntity) {
+        entityManager.persist(answerEntity);
+        return answerEntity;
     }
 
 }
