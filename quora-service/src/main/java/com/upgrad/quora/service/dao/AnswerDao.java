@@ -1,5 +1,6 @@
 package com.upgrad.quora.service.dao;
 
+import com.upgrad.quora.service.entity.AnswerEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -10,6 +11,11 @@ public class AnswerDao {
 
     @PersistenceContext
     EntityManager entityManager;
+
+    public AnswerEntity createAnswer(AnswerEntity answerEntity) {
+        entityManager.persist(answerEntity);
+        return answerEntity;
+    }
 
 }
 
