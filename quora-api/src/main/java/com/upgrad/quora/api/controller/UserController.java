@@ -91,8 +91,7 @@ public class UserController {
     public ResponseEntity<SignoutResponse> signout(@RequestHeader("authorization") final String authorization) throws SignOutRestrictedException {
         try {
             String accessToken = authorization.split("Bearer ")[1];
-            UserAuthTokenEntity authToken = signOutBusinessService.getUserAuthToken(accessToken);
-            signOutBusinessService.updateAuthToken(authToken);
+            UserAuthTokenEntity authToken = signOutBusinessService.signout(accessToken);
             UserEntity signedUser = authToken.getUser();
             SignoutResponse signoutResponse = new SignoutResponse();
             signoutResponse.id(signedUser.getUuid()).message("SIGNED OUT SUCCESSFULLY");

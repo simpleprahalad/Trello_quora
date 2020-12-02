@@ -3,6 +3,7 @@ package com.upgrad.quora.service.business;
 import com.upgrad.quora.service.dao.UserDao;
 import com.upgrad.quora.service.entity.UserAuthTokenEntity;
 import com.upgrad.quora.service.entity.UserEntity;
+import com.upgrad.quora.service.exception.AuthorizationFailedException;
 import com.upgrad.quora.service.exception.SignOutRestrictedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,14 +28,13 @@ public class SignOutBusinessService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void updateAuthToken(final UserAuthTokenEntity userAuthToken){
-
-        UserEntity signedUser= userAuthToken.getUser();
-        userAuthToken.setLogoutAt(ZonedDateTime.now());
-        userAuthToken.setExpiresAt(ZonedDateTime.now());
-        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(signedUser.getPassword());
-        userAuthToken.setAccessToken(jwtTokenProvider.generateToken(signedUser.getUuid(), ZonedDateTime.now(),ZonedDateTime.now()));
-        userDao.updateAuthToken(userAuthToken);
-
+    public UserAuthTokenEntity signout(final String authorization) throws SignOutRestrictedException {
+        UserAuthTokenEntity userAuthTokenEntity = userDao.getUserAuthToken(authorization);
+        if (userAuthTokenEntity == null) {
+            throw new SignOutRestrictedException("SGR-001", "User has not signed in.");
+        }
+        UserEntity signedUser= userAuthTokenEntity.getUser();
+        userAuthTokenEntity.setLogoutAt(ZonedDateTime.now());
+        return userAuthTokenEntity;
     }
 }
