@@ -9,16 +9,18 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 
 @Entity
-@Table(name="answer",schema = "quora")
+@Table(name = "answer", schema = "quora")
 @NamedQueries(
         {
-            @NamedQuery(name="getAnswerByUUID",query = "select a from AnswerEntity a where a.uuid=:uuid")
+                @NamedQuery(name = "getAnswerByUUID", query = "select a from AnswerEntity a where a.uuid=:uuid"),
+                @NamedQuery(name = "getAllAnswersToQuestion", query = "select a from AnswerEntity a where a.question=(select q from QuestionEntity q where q.uuid=:uuid)")
+
         }
 )
 public class AnswerEntity implements Serializable {
 
     @Id
-    @Column(name="ID")
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
@@ -26,20 +28,20 @@ public class AnswerEntity implements Serializable {
     @Size(max = 200)
     private String uuid;
 
-    @Column(name="ANS")
-    @Size(max=255)
+    @Column(name = "ANS")
+    @Size(max = 255)
     private String ans;
 
-    @Column(name="DATE")
+    @Column(name = "DATE")
     private ZonedDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="USER_ID")
+    @JoinColumn(name = "USER_ID")
     private UserEntity user;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name="QUESTION_ID")
+    @JoinColumn(name = "QUESTION_ID")
     private QuestionEntity question;
 
     public Integer getId() {
