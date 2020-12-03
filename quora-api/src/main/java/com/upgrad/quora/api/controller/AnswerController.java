@@ -1,12 +1,10 @@
 package com.upgrad.quora.api.controller;
 
 
-import com.upgrad.quora.api.model.AnswerEditRequest;
-import com.upgrad.quora.api.model.AnswerEditResponse;
-import com.upgrad.quora.api.model.AnswerRequest;
-import com.upgrad.quora.api.model.AnswerResponse;
+import com.upgrad.quora.api.model.*;
 import com.upgrad.quora.service.business.AnswerBusinessService;
 import com.upgrad.quora.service.entity.AnswerEntity;
+import com.upgrad.quora.service.entity.QuestionEntity;
 import com.upgrad.quora.service.exception.AnswerNotFoundException;
 import com.upgrad.quora.service.exception.AuthorizationFailedException;
 import com.upgrad.quora.service.exception.InvalidQuestionException;
@@ -20,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -43,5 +44,18 @@ public class AnswerController {
         AnswerResponse answerResponse = new AnswerResponse().id(newAnswer.getUuid()).status("ANSWER CREATED");
         return new ResponseEntity<AnswerResponse>(answerResponse, HttpStatus.CREATED);
 
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "answer/all/{questionId}",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<AnswerDetailsResponse>> getAllAnswersToQuestion(@PathVariable("questionId") final String question_uuid, @RequestHeader("authorization") final String authorization) throws AuthorizationFailedException, InvalidQuestionException {
+        // String accessToken = authorization.split("Bearer ")[1];
+        List<AnswerEntity> getAllAnswers = answerBusinessService.getAllAnswersToQuestion(question_uuid, authorization);
+        QuestionEntity question = answerBusinessService.getQuestion(question_uuid);
+        List<AnswerDetailsResponse> allAnswersToQuestion = new ArrayList<>();
+        for (AnswerEntity answerEntity : getAllAnswers) {
+            allAnswersToQuestion.add(new AnswerDetailsResponse().id(answerEntity.getUuid()).
+                    questionContent(question.getUuid()).answerContent(answerEntity.getAns()));
+        }
+        return new ResponseEntity<List<AnswerDetailsResponse>>(allAnswersToQuestion, HttpStatus.OK);
     }
 }
