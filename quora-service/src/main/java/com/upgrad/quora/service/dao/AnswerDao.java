@@ -31,5 +31,10 @@ public class AnswerDao {
         return answerEntity;
     }
 
+    public AnswerEntity deleteAnswer(final AnswerEntity answerToBeDeleted){
+        entityManager.remove(answerToBeDeleted);
+        return answerToBeDeleted;
+    }
+
 }
 
