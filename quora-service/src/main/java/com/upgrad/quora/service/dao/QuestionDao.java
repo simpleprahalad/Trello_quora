@@ -15,6 +15,11 @@ public class QuestionDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+    public QuestionEntity createQuestion(QuestionEntity questionEntity) {
+        entityManager.persist(questionEntity);
+        return questionEntity;
+    }
+
     public List<QuestionEntity> getAllQuestionsByUser(UserEntity user) {
       TypedQuery<QuestionEntity> query = entityManager.createQuery("SELECT q FROM QuestionEntity q WHERE q.user=:user", QuestionEntity.class);
       query.setParameter("user", user);
