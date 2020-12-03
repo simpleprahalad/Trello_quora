@@ -33,7 +33,6 @@ public class SignOutBusinessService {
         if (userAuthTokenEntity == null) {
             throw new SignOutRestrictedException("SGR-001", "User has not signed in.");
         }
-        UserEntity signedUser= userAuthTokenEntity.getUser();
         userAuthTokenEntity.setLogoutAt(ZonedDateTime.now());
         return userAuthTokenEntity;
     }
