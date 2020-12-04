@@ -27,7 +27,7 @@ public class UserDao {
         }
     }
 
-    public UserEntity getUser(final String userUuid) {
+    public UserEntity getUserByUuid(final String userUuid) {
         try {
             return entityManager.createNamedQuery("userByUuid", UserEntity.class).setParameter("uuid", userUuid)
                     .getSingleResult();
@@ -45,7 +45,7 @@ public class UserDao {
     }
 
     public UserEntity userDelete(final String userUuid) {
-        UserEntity userEntity = getUser(userUuid);
+        UserEntity userEntity = getUserByUuid(userUuid);
         if (userEntity != null) {
             entityManager.remove(userEntity);
         }

@@ -20,7 +20,7 @@ public class UserProfileBusinessService {
       UserNotFoundException {
 
     UserAuthTokenEntity userAuthTokenEntity = userDao.getUserAuthToken(authorizationToken);
-    UserEntity userEntity = userDao.getUser(userUuid);
+    UserEntity userEntity = userDao.getUserByUuid(userUuid);
     if (userAuthTokenEntity == null) {
       throw new AuthorizationFailedException("ATHR-001", "User has not signed in.");
     } else if (userAuthTokenEntity.getLogoutAt() != null || userAuthTokenEntity.getExpiresAt()

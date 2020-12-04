@@ -126,7 +126,7 @@ public class QuestionBusinessService {
                 "User is signed out.Sign in first to post a question.");
         }
 
-        UserEntity userEntity = userDao.getUser(userUuid);
+        UserEntity userEntity = userDao.getUserByUuid(userUuid);
 
         if(userEntity == null){
             throw new UserNotFoundException("USR-001",
