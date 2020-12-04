@@ -27,9 +27,7 @@ public class CommonController {
       @RequestHeader("authorization") final String authorization)
       throws AuthorizationFailedException, UserNotFoundException {
 
-    String[] bearerToken = authorization.split("Bearer ");
-    final UserEntity userEntity = userProfileBusinessService
-        .getUserProfile(userUuid, bearerToken[1]);
+    final UserEntity userEntity = userProfileBusinessService.getUserProfile(userUuid, authorization);
 
     UserDetailsResponse userDetailsResponse = new UserDetailsResponse()
         .firstName(userEntity.getFirstname()).lastName(userEntity.getLastname())

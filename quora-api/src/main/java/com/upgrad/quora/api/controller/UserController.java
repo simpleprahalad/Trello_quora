@@ -89,15 +89,13 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, path = "/user/signout", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SignoutResponse> signout(@RequestHeader("authorization") final String authorization) throws SignOutRestrictedException {
-        try {
-            String accessToken = authorization.split("Bearer ")[1];
-            UserAuthTokenEntity authToken = signOutBusinessService.signout(accessToken);
+            UserAuthTokenEntity authToken = signOutBusinessService.signout(authorization);
+            if(authToken==null){
+                throw new SignOutRestrictedException("SGR-001", "User is not Signed in");
+            }
             UserEntity signedUser = authToken.getUser();
             SignoutResponse signoutResponse = new SignoutResponse();
             signoutResponse.id(signedUser.getUuid()).message("SIGNED OUT SUCCESSFULLY");
             return new ResponseEntity<SignoutResponse>(signoutResponse, HttpStatus.OK);
-        } catch (ArrayIndexOutOfBoundsException exe) {
-            throw new SignOutRestrictedException("SGR-001", "User is not Signed in");
-        }
     }
 }
