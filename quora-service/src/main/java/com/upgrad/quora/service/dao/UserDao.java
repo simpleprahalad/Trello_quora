@@ -44,7 +44,7 @@ public class UserDao {
         }
     }
 
-    public UserEntity userDelete(final String userUuid) {
+    public UserEntity deleteUser(final String userUuid) {
         UserEntity userEntity = getUserByUuid(userUuid);
         if (userEntity != null) {
             entityManager.remove(userEntity);

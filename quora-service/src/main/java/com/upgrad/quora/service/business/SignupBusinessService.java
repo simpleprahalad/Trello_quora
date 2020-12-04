@@ -19,9 +19,6 @@ public class SignupBusinessService {
     @Transactional(propagation = Propagation.REQUIRED)
     public UserEntity signup(UserEntity userEntity) {
         String password = userEntity.getPassword();
-        if(password == null){
-            password = "proman@123";
-        }
         String[] encryptedText = cryptographyProvider.encrypt(password);
         userEntity.setSalt(encryptedText[0]);
         userEntity.setPassword(encryptedText[1]);

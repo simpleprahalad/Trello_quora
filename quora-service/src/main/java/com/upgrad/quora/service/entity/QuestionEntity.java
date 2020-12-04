@@ -1,18 +1,22 @@
 package com.upgrad.quora.service.entity;
 
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "question", schema = "quora")
 @NamedQueries(
         {
-                @NamedQuery(name="questionByID", query = "select q from QuestionEntity q where q.uuid=:uuid")
+                @NamedQuery(name="getQuestionByUUID",query = "SELECT q FROM QuestionEntity q WHERE q.uuid=:uuid"),
+                @NamedQuery(name="getAllQuestion",query = "SELECT q FROM QuestionEntity q"),
+                @NamedQuery(name="getAllQuestionsByUser",query="SELECT q FROM QuestionEntity q WHERE q.user=:user")
+
         }
 )
 public class QuestionEntity {
@@ -30,9 +34,9 @@ public class QuestionEntity {
     @NotNull
     private String content;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne
     @JoinColumn(name = "USER_ID")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserEntity user;
 
     @Column(name = "DATE")
