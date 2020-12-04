@@ -1,94 +1,44 @@
-package com.upgrad.quora.service.entity;
+package com.upgrad.quora.service.dao;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import com.upgrad.quora.service.entity.AnswerEntity;
+import org.springframework.stereotype.Repository;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.time.ZonedDateTime;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import java.util.List;
 
-@Entity
-@Table(name="answer",schema = "quora")
-@NamedQueries(
-        {
-                @NamedQuery(name="getAnswerByUUID",query = "select a from AnswerEntity a where a.uuid=:uuid"),
-                @NamedQuery(name="getAllAnswersToQuestion",query = "select a from AnswerEntity a where a.question=(select q from QuestionEntity q where q.uuid=:uuid)")
+@Repository
+public class AnswerDao {
+
+    @PersistenceContext
+    EntityManager entityManager;
+
+    public AnswerEntity createAnswer(AnswerEntity answerEntity) {
+        entityManager.persist(answerEntity);
+        return answerEntity;
+    }
+
+    public AnswerEntity getAnswerByUuid(final String uuid) {
+        try {
+            return entityManager.createNamedQuery("getAnswerByUUID", AnswerEntity.class).setParameter("uuid", uuid).getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
 
         }
-)
-public class AnswerEntity implements Serializable {
-
-    @Id
-    @Column(name="ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @Column(name = "UUID")
-    @Size(max = 200)
-    private String uuid;
-
-    @Column(name="ANS")
-    @Size(max=255)
-    private String ans;
-
-    @Column(name="DATE")
-    private ZonedDateTime date;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="USER_ID")
-    private UserEntity user;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name="QUESTION_ID")
-    private QuestionEntity question;
-
-    public Integer getId() {
-        return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public AnswerEntity updateAnswer(final AnswerEntity updatedAnswerEntity) {
+        entityManager.merge(updatedAnswerEntity);
+        return updatedAnswerEntity;
     }
 
-    public String getUuid() {
-        return uuid;
+    public AnswerEntity deleteAnswer(final AnswerEntity answerToBeDeleted){
+        entityManager.remove(answerToBeDeleted);
+        return answerToBeDeleted;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getAns() {
-        return ans;
-    }
-
-    public void setAns(String ans) {
-        this.ans = ans;
-    }
-
-    public ZonedDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(ZonedDateTime date) {
-        this.date = date;
-    }
-
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
-
-    public QuestionEntity getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(QuestionEntity question) {
-        this.question = question;
+    public List<AnswerEntity> getAllAnswersToQuestion(final String question_id){
+        return entityManager.createNamedQuery("getAllAnswersToQuestion",AnswerEntity.class).setParameter("uuid",question_id).getResultList();
     }
 }
