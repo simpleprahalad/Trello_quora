@@ -24,7 +24,8 @@ public class AdminBusinessService {
         UserAuthTokenEntity userAuthTokenEntity = userDao.getUserAuthToken(authorizationToken);
         if(userAuthTokenEntity == null) {
             throw new AuthorizationFailedException("ATHR-001", "User has not signed in.");
-        } else if (userAuthTokenEntity.getLogoutAt() != null || userAuthTokenEntity.getExpiresAt().isAfter(ZonedDateTime.now())) {
+        } else if (userAuthTokenEntity.getLogoutAt() != null || userAuthTokenEntity.getExpiresAt()
+            .isBefore(ZonedDateTime.now())) {
             throw new AuthorizationFailedException("ATHR-002", "User is signed out.");
         } else if (userAuthTokenEntity.getUser().getRole() == "nonadmin") {
             throw new AuthorizationFailedException("ATHR-003", "Unauthorized Access, Entered user is not an admin");
