@@ -69,7 +69,7 @@ public class QuestionController {
     }
   
     @RequestMapping(method = RequestMethod.DELETE,
-            path = "/question/edit/{questionId}",
+            path = "/question/delete/{questionId}",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<QuestionResponse> deleteQuestion(@PathVariable("questionId") final String questionUuid,
                                                          @RequestHeader("authorization") final String authorization)
