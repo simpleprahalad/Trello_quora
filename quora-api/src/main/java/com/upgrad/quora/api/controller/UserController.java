@@ -38,9 +38,11 @@ public class UserController {
     @Autowired
     SignOutBusinessService signOutBusinessService;
 
-    @RequestMapping(method = RequestMethod.POST, path = "/user/signup", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(method = RequestMethod.POST,
+            path = "/user/signup",
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SignupUserResponse> signup(final SignupUserRequest signupUserRequest) throws SignUpRestrictedException {
-
         if (signupBusinessService.getUserByUserName(signupUserRequest.getUserName()) != null)
             throw new SignUpRestrictedException("SGR-001", "Try any other Username, this Username has already been taken");
         else if (signupBusinessService.getUserByEmail(signupUserRequest.getEmailAddress()) != null)
@@ -61,16 +63,14 @@ public class UserController {
             final UserEntity createdUserEntity = signupBusinessService.signup(userEntity);
             SignupUserResponse userResponse = new SignupUserResponse().id(createdUserEntity.getUuid()).status("USER SUCCESSFULLY REGISTERED");
             return new ResponseEntity<SignupUserResponse>(userResponse, HttpStatus.CREATED);
-
         }
-
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/user/signin", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<SigninResponse> signIn(@RequestHeader("authorization") final String authorization) throws AuthenticationFailedException {
-
+    @RequestMapping(method = RequestMethod.POST,
+            path = "/user/signin",
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<SigninResponse> signin(@RequestHeader("authorization") final String authorization) throws AuthenticationFailedException {
         byte[] decode = Base64.getDecoder().decode(authorization.split("Basic ")[1]);
-
         String decodedText = new String(decode);
         String[] decodedArray = decodedText.split(":");
 
@@ -84,13 +84,14 @@ public class UserController {
 
         headers.add("access-token", userAuthToken.getAccessToken());
         return new ResponseEntity<SigninResponse>(signinResponse, headers, HttpStatus.OK);
-
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/user/signout", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(method = RequestMethod.POST,
+            path = "/user/signout",
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SignoutResponse> signout(@RequestHeader("authorization") final String authorization) throws SignOutRestrictedException {
             UserAuthTokenEntity authToken = signOutBusinessService.signout(authorization);
-            if(authToken==null){
+            if (authToken == null) {
                 throw new SignOutRestrictedException("SGR-001", "User is not Signed in");
             }
             UserEntity signedUser = authToken.getUser();

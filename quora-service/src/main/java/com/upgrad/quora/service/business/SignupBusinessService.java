@@ -25,12 +25,11 @@ public class SignupBusinessService {
         return userDao.createUser(userEntity);
     }
 
-
-    public UserEntity getUserByUserName(final String userName){
+    public UserEntity getUserByUserName(final String userName) {
         return userDao.getUserByUserName(userName);
     }
 
-    public UserEntity getUserByEmail(final String email){
+    public UserEntity getUserByEmail(final String email) {
         return userDao.getUserByEmail(email);
     }
 }

@@ -21,7 +21,8 @@ public class UserDao {
 
     public UserEntity getUserByUserName(final String userName) {
         try {
-            return entityManager.createNamedQuery("userByuserName", UserEntity.class).setParameter("username", userName).getSingleResult();
+            return entityManager.createNamedQuery("userByuserName", UserEntity.class)
+                    .setParameter("username", userName).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         }
@@ -29,7 +30,8 @@ public class UserDao {
 
     public UserEntity getUserByUuid(final String userUuid) {
         try {
-            return entityManager.createNamedQuery("userByUuid", UserEntity.class).setParameter("uuid", userUuid)
+            return entityManager.createNamedQuery("userByUuid", UserEntity.class)
+                    .setParameter("uuid", userUuid)
                     .getSingleResult();
         } catch (NoResultException nre) {
             return null;
@@ -38,7 +40,8 @@ public class UserDao {
 
     public UserEntity getUserByEmail(final String email) {
         try {
-            return entityManager.createNamedQuery("userByEmail", UserEntity.class).setParameter("email", email).getSingleResult();
+            return entityManager.createNamedQuery("userByEmail", UserEntity.class)
+                    .setParameter("email", email).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         }
@@ -59,9 +62,10 @@ public class UserDao {
 
     public UserAuthTokenEntity getUserAuthToken(final String accessToken) {
         try {
-            return entityManager.createNamedQuery("userAuthTokenByAccessToken", UserAuthTokenEntity.class).setParameter("accessToken", accessToken).getSingleResult();
+            return entityManager.createNamedQuery("userAuthTokenByAccessToken", UserAuthTokenEntity.class)
+                    .setParameter("accessToken", accessToken)
+                    .getSingleResult();
         } catch (NoResultException nre) {
-
             return null;
         }
     }

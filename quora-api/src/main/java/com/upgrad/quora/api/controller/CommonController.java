@@ -22,11 +22,12 @@ public class CommonController {
   @Autowired
   private UserProfileBusinessService userProfileBusinessService;
 
-  @RequestMapping(method = RequestMethod.GET, path = "/userprofile/{userId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @RequestMapping(method = RequestMethod.GET,
+          path = "/userprofile/{userId}",
+          produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public ResponseEntity<UserDetailsResponse> getUser(@PathVariable("userId") final String userUuid,
-      @RequestHeader("authorization") final String authorization)
+                                                     @RequestHeader("authorization") final String authorization)
       throws AuthorizationFailedException, UserNotFoundException {
-
     final UserEntity userEntity = userProfileBusinessService.getUserProfile(userUuid, authorization);
 
     UserDetailsResponse userDetailsResponse = new UserDetailsResponse()

@@ -13,7 +13,11 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(SignUpRestrictedException.class)
     public ResponseEntity<ErrorResponse> signUpRestrictedException(SignUpRestrictedException exe, WebRequest request) {
-        return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()).rootCause("User already exist with the provided information.Try to enter unique email/username"), HttpStatus.CONFLICT);
+        return new ResponseEntity<ErrorResponse>(
+                new ErrorResponse().code(exe.getCode())
+                        .message(exe.getErrorMessage())
+                        .rootCause("User already exist with the provided information.Try to enter unique email/username"),
+                HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(AuthenticationFailedException.class)
@@ -26,8 +30,10 @@ public class RestExceptionHandler {
     @ExceptionHandler(SignOutRestrictedException.class)
     public ResponseEntity<ErrorResponse> signOutRestrictedException(SignOutRestrictedException exe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(
-                new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()).rootCause("Access token expired or invalid"), HttpStatus.UNAUTHORIZED
-        );
+                new ErrorResponse().code(exe.getCode())
+                        .message(exe.getErrorMessage())
+                        .rootCause("Access token expired or invalid"),
+                HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(UserNotFoundException.class)

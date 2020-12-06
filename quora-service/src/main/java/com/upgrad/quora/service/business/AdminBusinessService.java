@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.ZonedDateTime;
-
 @Service
 public class AdminBusinessService {
 
@@ -24,7 +22,8 @@ public class AdminBusinessService {
     @Transactional(propagation = Propagation.REQUIRED)
     public UserEntity deleteUser(final String userUuid, final String authorizationToken)
             throws AuthorizationFailedException, UserNotFoundException {
-        UserAuthTokenEntity userAuthTokenEntity=authenticationService.validateToken(authorizationToken,"ATHR-002","User is signed out.");
+        UserAuthTokenEntity userAuthTokenEntity = authenticationService.validateToken(authorizationToken,
+                "ATHR-002","User is signed out.");
 
        if (userAuthTokenEntity.getUser().getRole().equals("nonadmin")) {
             throw new AuthorizationFailedException("ATHR-003", "Unauthorized Access, Entered user is not an admin");

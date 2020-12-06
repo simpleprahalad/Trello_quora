@@ -13,10 +13,9 @@ import java.time.ZonedDateTime;
 @Table(name = "question", schema = "quora")
 @NamedQueries(
         {
-                @NamedQuery(name="getQuestionByUUID",query = "SELECT q FROM QuestionEntity q WHERE q.uuid=:uuid"),
-                @NamedQuery(name="getAllQuestion",query = "SELECT q FROM QuestionEntity q"),
-                @NamedQuery(name="getAllQuestionsByUser",query="SELECT q FROM QuestionEntity q WHERE q.user=:user")
-
+                @NamedQuery(name = "getQuestionByUUID", query = "SELECT q FROM QuestionEntity q WHERE q.uuid=:uuid"),
+                @NamedQuery(name = "getAllQuestion", query = "SELECT q FROM QuestionEntity q"),
+                @NamedQuery(name = "getAllQuestionsByUser", query = "SELECT q FROM QuestionEntity q WHERE q.user=:user")
         }
 )
 public class QuestionEntity {
@@ -28,7 +27,6 @@ public class QuestionEntity {
     @Column(name = "UUID")
     @Size(max = 64)
     private String uuid;
-
 
     @Column(name = "CONTENT")
     @NotNull

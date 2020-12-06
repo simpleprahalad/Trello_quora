@@ -30,7 +30,7 @@ public class QuestionController {
         consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
         produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<QuestionResponse> createQuestion(final QuestionRequest questionRequest,
-        @RequestHeader("authorization") final String authorization)
+                                                           @RequestHeader("authorization") final String authorization)
         throws AuthorizationFailedException, UserNotFoundException {
         QuestionEntity questionEntity = questionBusinessService.createQuestion(questionRequest.getContent(), authorization);
 
@@ -42,7 +42,7 @@ public class QuestionController {
         path = "/question/all",
         produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<QuestionDetailsResponse>> getAllQuestions(@RequestHeader("authorization") final String authorization)
-        throws AuthorizationFailedException{
+        throws AuthorizationFailedException {
         List<QuestionEntity> allQuestions = questionBusinessService.getAllQuestions(authorization);
         List<QuestionDetailsResponse> allQuestionResponse = new ArrayList<>();
 
@@ -84,7 +84,7 @@ public class QuestionController {
         path = "question/all/{userId}",
         produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<QuestionDetailsResponse>> getAllQuestionsByUser(@PathVariable("userId") final String userUuid,
-        @RequestHeader("authorization") final String authorization)
+                                                                               @RequestHeader("authorization") final String authorization)
         throws AuthorizationFailedException, UserNotFoundException {
         List<QuestionEntity> allQuestionsByUser = questionBusinessService.getAllQuestionsByUser(authorization, userUuid);
         List<QuestionDetailsResponse> allQuestionByUserResponse = new ArrayList<>();
