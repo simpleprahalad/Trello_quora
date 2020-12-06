@@ -4,6 +4,7 @@ import com.upgrad.quora.api.model.UserDetailsResponse;
 import com.upgrad.quora.service.business.UserProfileBusinessService;
 import com.upgrad.quora.service.entity.UserEntity;
 import com.upgrad.quora.service.exception.AuthorizationFailedException;
+import com.upgrad.quora.service.exception.InvalidQuestionException;
 import com.upgrad.quora.service.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,24 +20,30 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping
 public class CommonController {
 
-  @Autowired
-  private UserProfileBusinessService userProfileBusinessService;
+    @Autowired
+    private UserProfileBusinessService userProfileBusinessService;
 
-  @RequestMapping(method = RequestMethod.GET, path = "/userprofile/{userId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public ResponseEntity<UserDetailsResponse> getUser(@PathVariable("userId") final String userUuid,
-      @RequestHeader("authorization") final String authorization)
-      throws AuthorizationFailedException, UserNotFoundException {
+    /**
+     * @param userUuid
+     * @param authorization
+     * @return
+     * @throws AuthorizationFailedException
+     * @throws UserNotFoundException
+     */
+    @RequestMapping(method = RequestMethod.GET,
+            path = "/userprofile/{userId}",
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<UserDetailsResponse> getUser(@PathVariable("userId") final String userUuid,
+                                                       @RequestHeader("authorization") final String authorization)
+            throws AuthorizationFailedException, UserNotFoundException {
+        final UserEntity userEntity = userProfileBusinessService.getUserProfile(userUuid, authorization);
 
-    String[] bearerToken = authorization.split("Bearer ");
-    final UserEntity userEntity = userProfileBusinessService
-        .getUserProfile(userUuid, bearerToken[1]);
+        UserDetailsResponse userDetailsResponse = new UserDetailsResponse()
+                .firstName(userEntity.getFirstname()).lastName(userEntity.getLastname())
+                .userName(userEntity.getUsername()).emailAddress(userEntity.getEmail())
+                .country(userEntity.getCountry()).aboutMe(userEntity.getAboutme())
+                .dob(userEntity.getDob()).contactNumber(userEntity.getContactnumber());
 
-    UserDetailsResponse userDetailsResponse = new UserDetailsResponse()
-        .firstName(userEntity.getFirstname()).lastName(userEntity.getLastname())
-        .userName(userEntity.getUsername()).emailAddress(userEntity.getEmail())
-        .country(userEntity.getCountry()).aboutMe(userEntity.getAboutme())
-        .dob(userEntity.getDob()).contactNumber(userEntity.getContactnumber());
-
-    return new ResponseEntity<UserDetailsResponse>(userDetailsResponse, HttpStatus.OK);
-  }
+        return new ResponseEntity<UserDetailsResponse>(userDetailsResponse, HttpStatus.OK);
+    }
 }

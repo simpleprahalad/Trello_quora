@@ -14,10 +14,10 @@ INSERT INTO users(id, uuid, firstname, lastname, username, email, password, salt
 
 
 --Insert values in USER_AUTH table
-insert into user_auth (id , uuid , user_id , access_token , expires_at , login_at, logout_at) values(1024 , 'database_uuid' , 1025 , 'database_accesstoken' , '2018-09-17 21:07:02.07' , '2018-09-17 13:07:02.07' , null);
-insert into user_auth (id , uuid , user_id , access_token , expires_at , login_at , logout_at) values(1025 , 'database_uuid1' , 1026 , 'database_accesstoken1' , '2018-09-17 21:07:02.07' , '2018-09-17 13:07:02.07' , null );
-insert into user_auth (id , uuid , user_id , access_token , expires_at , login_at , logout_at) values(1026 , 'database_uuid2' , 1027 , 'database_accesstoken2' , '2018-09-17 21:07:02.07' , '2018-09-17 13:07:02.07' , null );
-insert into user_auth (id , uuid , user_id , access_token , expires_at , login_at , logout_at) values(1027 , 'database_uuid3' , 1028 , 'database_accesstoken3' , '2018-09-17 21:07:02.07' , '2018-09-17 13:07:02.07' , '2018-09-17 15:07:02.07' );
+insert into user_auth (id , uuid , user_id , access_token , expires_at , login_at, logout_at) values(1024 , 'database_uuid' , 1025 , 'database_accesstoken' , '2021-09-17 21:07:02.07' , '2018-09-17 13:07:02.07' , null);
+insert into user_auth (id , uuid , user_id , access_token , expires_at , login_at , logout_at) values(1025 , 'database_uuid1' , 1026 , 'database_accesstoken1' , '2021-09-17 21:07:02.07' , '2018-09-17 13:07:02.07' , null );
+insert into user_auth (id , uuid , user_id , access_token , expires_at , login_at , logout_at) values(1026 , 'database_uuid2' , 1027 , 'database_accesstoken2' , '2021-09-17 21:07:02.07' , '2018-09-17 13:07:02.07' , null );
+insert into user_auth (id , uuid , user_id , access_token , expires_at , login_at , logout_at) values(1027 , 'database_uuid3' , 1028 , 'database_accesstoken3' , '2021-09-17 21:07:02.07' , '2018-09-17 13:07:02.07' , '2018-09-17 15:07:02.07' );
 
 
 --Insert values in QUESTION table
