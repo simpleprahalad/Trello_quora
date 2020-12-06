@@ -1,7 +1,7 @@
 # Trello_quora
 Repository For Group Project
 
-##Database Configuration
+## Database Configuration
 Please note, the build will require a postgresql database named 'quora' along with schema named as 'quora' (as opposed to implicitly set 'public'). 
 
 Please note, the username and password can be configured by user from localhost.properties (`qoura-db/src/main/resources/config/localhost.properties`)
