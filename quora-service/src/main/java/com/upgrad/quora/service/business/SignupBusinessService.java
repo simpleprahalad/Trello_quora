@@ -16,6 +16,10 @@ public class SignupBusinessService {
     @Autowired
     private UserDao userDao;
 
+    /**
+     * @param userEntity
+     * @return
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     public UserEntity signup(UserEntity userEntity) {
         String password = userEntity.getPassword();
@@ -25,10 +29,18 @@ public class SignupBusinessService {
         return userDao.createUser(userEntity);
     }
 
+    /**
+     * @param userName
+     * @return
+     */
     public UserEntity getUserByUserName(final String userName) {
         return userDao.getUserByUserName(userName);
     }
 
+    /**
+     * @param email
+     * @return
+     */
     public UserEntity getUserByEmail(final String email) {
         return userDao.getUserByEmail(email);
     }

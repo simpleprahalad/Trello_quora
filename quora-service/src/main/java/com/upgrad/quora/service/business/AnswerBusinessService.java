@@ -33,6 +33,14 @@ public class AnswerBusinessService {
     @Autowired
     private AuthenticationService authenticationService;
 
+    /**
+     * @param content
+     * @param uuid
+     * @param authorisation
+     * @return
+     * @throws AuthorizationFailedException
+     * @throws InvalidQuestionException
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     public AnswerEntity createAnswer(final String content,
                                      final String uuid,
@@ -55,6 +63,14 @@ public class AnswerBusinessService {
         return answer;
     }
 
+    /**
+     * @param answerUuid
+     * @param content
+     * @param authorisation
+     * @return
+     * @throws AuthorizationFailedException
+     * @throws AnswerNotFoundException
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     public AnswerEntity editAnswer(final String answerUuid,
                                    final String content,
@@ -74,6 +90,13 @@ public class AnswerBusinessService {
         return answerDao.updateAnswer(answerToBeEdited);
     }
 
+    /**
+     * @param answerUuid
+     * @param authorisation
+     * @return
+     * @throws AuthorizationFailedException
+     * @throws AnswerNotFoundException
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     public AnswerEntity deleteAnswer(final String answerUuid,
                                      final String authorisation) throws AuthorizationFailedException, AnswerNotFoundException {
@@ -93,6 +116,13 @@ public class AnswerBusinessService {
             return answerDao.deleteAnswer(answerToBeDeleted);
     }
 
+    /**
+     * @param question_uuid
+     * @param authorisation
+     * @return
+     * @throws AuthorizationFailedException
+     * @throws InvalidQuestionException
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     public List<AnswerEntity> getAllAnswersToQuestion(final String question_uuid,
                                                       final String authorisation) throws AuthorizationFailedException, InvalidQuestionException {
@@ -105,6 +135,11 @@ public class AnswerBusinessService {
         return getAllAnswers;
     }
 
+    /**
+     * @param question_uuid
+     * @return
+     * @throws InvalidQuestionException
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     public QuestionEntity getQuestion(final String question_uuid) throws InvalidQuestionException {
         QuestionEntity question = questionDao.getQuestionByuuid(question_uuid);

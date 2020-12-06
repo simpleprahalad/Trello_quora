@@ -17,6 +17,13 @@ public class UserProfileBusinessService {
     @Autowired
     private AuthenticationService authenticationService;
 
+    /**
+     * @param userUuid
+     * @param authorizationToken
+     * @return
+     * @throws AuthorizationFailedException
+     * @throws UserNotFoundException
+     */
     public UserEntity getUserProfile(final String userUuid, final String authorizationToken)
             throws AuthorizationFailedException,
             UserNotFoundException {

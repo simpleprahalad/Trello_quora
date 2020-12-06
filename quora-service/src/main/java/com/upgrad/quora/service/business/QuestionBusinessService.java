@@ -30,9 +30,15 @@ public class QuestionBusinessService {
     @Autowired
     private AuthenticationService authenticationService;
 
+    /**
+     * @param questionContent
+     * @param authorizationToken
+     * @return
+     * @throws AuthorizationFailedException
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     public QuestionEntity createQuestion(final String questionContent,
-                                         final String authorizationToken) throws AuthorizationFailedException, UserNotFoundException {
+                                         final String authorizationToken) throws AuthorizationFailedException {
         UserAuthTokenEntity userAuthTokenEntity = authenticationService.validateToken(authorizationToken,
                 "ATHR-002", "User is signed out.Sign in first to post a question.");
 
@@ -45,6 +51,11 @@ public class QuestionBusinessService {
         return questionDao.createQuestion(questionEntity);
     }
 
+    /**
+     * @param authorizationToken
+     * @return
+     * @throws AuthorizationFailedException
+     */
     public List<QuestionEntity> getAllQuestions(final String authorizationToken)
             throws AuthorizationFailedException {
         UserAuthTokenEntity userAuthTokenEntity = authenticationService.validateToken(authorizationToken,
@@ -52,6 +63,14 @@ public class QuestionBusinessService {
         return questionDao.getAllQuestions();
     }
 
+    /**
+     * @param questionID
+     * @param questionContent
+     * @param authorizationToken
+     * @return
+     * @throws AuthorizationFailedException
+     * @throws InvalidQuestionException
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     public QuestionEntity editQuestion(final String questionID,
                                        final String questionContent,
@@ -74,6 +93,13 @@ public class QuestionBusinessService {
         return questionEntity;
     }
 
+    /**
+     * @param questionID
+     * @param authorizationToken
+     * @return
+     * @throws AuthorizationFailedException
+     * @throws InvalidQuestionException
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     public QuestionEntity deleteQuestion(final String questionID,
                                          final String authorizationToken) throws AuthorizationFailedException, InvalidQuestionException {
@@ -93,6 +119,13 @@ public class QuestionBusinessService {
         return questionEntity;
     }
 
+    /**
+     * @param authorizationToken
+     * @param userUuid
+     * @return
+     * @throws AuthorizationFailedException
+     * @throws UserNotFoundException
+     */
     public List<QuestionEntity> getAllQuestionsByUser(String authorizationToken, String userUuid)
             throws AuthorizationFailedException, UserNotFoundException {
         UserAuthTokenEntity userAuthTokenEntity = authenticationService.validateToken(authorizationToken,

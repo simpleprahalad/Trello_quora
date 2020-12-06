@@ -14,11 +14,19 @@ public class AnswerDao {
     @PersistenceContext
     EntityManager entityManager;
 
+    /**
+     * @param answerEntity
+     * @return
+     */
     public AnswerEntity createAnswer(AnswerEntity answerEntity) {
         entityManager.persist(answerEntity);
         return answerEntity;
     }
 
+    /**
+     * @param uuid
+     * @return
+     */
     public AnswerEntity getAnswerByUuid(final String uuid) {
         try {
             return entityManager.createNamedQuery("getAnswerByUUID", AnswerEntity.class).setParameter("uuid", uuid).getSingleResult();
@@ -27,16 +35,28 @@ public class AnswerDao {
         }
     }
 
+    /**
+     * @param updatedAnswerEntity
+     * @return
+     */
     public AnswerEntity updateAnswer(final AnswerEntity updatedAnswerEntity) {
         entityManager.merge(updatedAnswerEntity);
         return updatedAnswerEntity;
     }
 
+    /**
+     * @param answerToBeDeleted
+     * @return
+     */
     public AnswerEntity deleteAnswer(final AnswerEntity answerToBeDeleted) {
         entityManager.remove(answerToBeDeleted);
         return answerToBeDeleted;
     }
 
+    /**
+     * @param question_id
+     * @return
+     */
     public List<AnswerEntity> getAllAnswersToQuestion(final String question_id) {
         return entityManager.createNamedQuery("getAllAnswersToQuestion", AnswerEntity.class).setParameter("uuid", question_id).getResultList();
     }

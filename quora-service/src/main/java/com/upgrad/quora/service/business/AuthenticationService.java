@@ -20,6 +20,12 @@ public class AuthenticationService {
     @Autowired
     private PasswordCryptographyProvider cryptographyProvider;
 
+    /**
+     * @param username
+     * @param password
+     * @return
+     * @throws AuthenticationFailedException
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     public UserAuthTokenEntity authenticate(final String username, final String password) throws AuthenticationFailedException {
         UserEntity userEntity = userDao.getUserByUserName(username);
@@ -45,6 +51,13 @@ public class AuthenticationService {
         }
     }
 
+    /**
+     * @param authorisation
+     * @param errorCode
+     * @param errorMessage
+     * @return
+     * @throws AuthorizationFailedException
+     */
     public UserAuthTokenEntity validateToken(String authorisation,
                                              String errorCode,
                                              String errorMessage) throws AuthorizationFailedException {

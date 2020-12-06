@@ -7,6 +7,7 @@ import com.upgrad.quora.service.entity.QuestionEntity;
 import com.upgrad.quora.service.exception.AnswerNotFoundException;
 import com.upgrad.quora.service.exception.AuthorizationFailedException;
 import com.upgrad.quora.service.exception.InvalidQuestionException;
+import com.upgrad.quora.service.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +24,14 @@ public class AnswerController {
     @Autowired
     AnswerBusinessService answerBusinessService;
 
+    /**
+     * @param answerRequest
+     * @param question_uuid
+     * @param authorization
+     * @return
+     * @throws AuthorizationFailedException
+     * @throws InvalidQuestionException
+     */
     @RequestMapping(method = RequestMethod.POST,
             value = "/question/{questionId}/answer/create",
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -36,6 +45,14 @@ public class AnswerController {
         return new ResponseEntity<AnswerResponse>(answerResponse, HttpStatus.CREATED);
     }
 
+    /**
+     * @param answerEditRequest
+     * @param answer_uuid
+     * @param authorization
+     * @return
+     * @throws AuthorizationFailedException
+     * @throws AnswerNotFoundException
+     */
     @RequestMapping(method = RequestMethod.PUT,
             value = "/answer/edit/{answerId}",
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -49,6 +66,13 @@ public class AnswerController {
         return new ResponseEntity<AnswerEditResponse>(answerEditResponse, HttpStatus.OK);
     }
 
+    /**
+     * @param answer_uuid
+     * @param authorization
+     * @return
+     * @throws AuthorizationFailedException
+     * @throws AnswerNotFoundException
+     */
     @RequestMapping(method = RequestMethod.DELETE,
             value = "/answer/delete/{answerId}",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -60,6 +84,13 @@ public class AnswerController {
         return new ResponseEntity<AnswerDeleteResponse>(answerDeleteResponse, HttpStatus.OK);
     }
 
+    /**
+     * @param question_uuid
+     * @param authorization
+     * @return
+     * @throws AuthorizationFailedException
+     * @throws InvalidQuestionException
+     */
     @RequestMapping(method = RequestMethod.GET,
             value = "answer/all/{questionId}",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

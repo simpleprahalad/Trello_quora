@@ -19,13 +19,20 @@ public class AdminBusinessService {
     @Autowired
     private AuthenticationService authenticationService;
 
+    /**
+     * @param userUuid
+     * @param authorizationToken
+     * @return
+     * @throws AuthorizationFailedException
+     * @throws UserNotFoundException
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     public UserEntity deleteUser(final String userUuid, final String authorizationToken)
             throws AuthorizationFailedException, UserNotFoundException {
         UserAuthTokenEntity userAuthTokenEntity = authenticationService.validateToken(authorizationToken,
-                "ATHR-002","User is signed out.");
+                "ATHR-002", "User is signed out.");
 
-       if (userAuthTokenEntity.getUser().getRole().equals("nonadmin")) {
+        if (userAuthTokenEntity.getUser().getRole().equals("nonadmin")) {
             throw new AuthorizationFailedException("ATHR-003", "Unauthorized Access, Entered user is not an admin");
         }
 
