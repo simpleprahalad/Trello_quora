@@ -23,10 +23,15 @@ public class SignOutBusinessService {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public UserAuthTokenEntity signout(final String authorization) throws SignOutRestrictedException {
+        //Authenticate user auth token passed as parameter
         UserAuthTokenEntity userAuthTokenEntity = userDao.getUserAuthToken(authorization);
+
+        //Throw SignOutRestrictedException if user is not signed in
         if (userAuthTokenEntity == null) {
             throw new SignOutRestrictedException("SGR-001", "User has not signed in.");
         }
+
+        //Set logout time for the respective user auth token
         userAuthTokenEntity.setLogoutAt(ZonedDateTime.now());
         return userAuthTokenEntity;
     }

@@ -45,9 +45,11 @@ public class AnswerBusinessService {
     public AnswerEntity createAnswer(final String content,
                                      final String uuid,
                                      final String authorisation) throws AuthorizationFailedException, InvalidQuestionException {
+        //Authenticate the user auth token passed as parameter using authenticationService
         UserAuthTokenEntity userAuthTokenEntity = authenticationService.validateToken(authorisation,
                 "ATHR-002", "User is signed out.Sign in first to post an answer");
 
+        //Throw InvalidQuestionException if question does not exist
         QuestionEntity question = questionDao.getQuestionByuuid(uuid);
         if (question == null)
             throw new InvalidQuestionException("QUES-001", "The question entered is invalid");
@@ -59,6 +61,7 @@ public class AnswerBusinessService {
         answer.setAns(content);
         answer.setUser(userAuthTokenEntity.getUser());
 
+        //Create answer using answer DAO
         answerDao.createAnswer(answer);
         return answer;
     }
@@ -78,10 +81,12 @@ public class AnswerBusinessService {
         UserAuthTokenEntity userAuthTokenEntity = authenticationService.validateToken(authorisation,
                 "ATHR-002", "User is signed out.Sign in first to edit an answer");
 
+        //Get answer using answerDAO and throw AnswerNotFoundException if answer does not exist
         AnswerEntity answerToBeEdited = answerDao.getAnswerByUuid(answerUuid);
         if (answerToBeEdited == null)
             throw new AnswerNotFoundException("ANS-001", "Entered answer uuid does not exist");
 
+        //Making sure only answer owner can edit the answer
         String userUuid = userAuthTokenEntity.getUser().getUuid();
         if (answerToBeEdited.getUser().getUuid() != userUuid)
             throw new AuthorizationFailedException("ATHR-003", "Only the answer owner can edit the answer");
@@ -103,6 +108,7 @@ public class AnswerBusinessService {
         UserAuthTokenEntity userAuthTokenEntity = authenticationService.validateToken(authorisation,
                 "ATHR-002", "User is signed out.Sign in first to delete an answer");
 
+        //Get answer using answerDAO and throw AnswerNotFoundException if answer does not exist
         AnswerEntity answerToBeDeleted = answerDao.getAnswerByUuid(answerUuid);
         if (answerToBeDeleted == null)
             throw new AnswerNotFoundException("ANS-001", "Entered answer uuid does not exist");
@@ -110,6 +116,7 @@ public class AnswerBusinessService {
         String loggedInUserUuid = userAuthTokenEntity.getUser().getUuid();
         String loggedInUserRole = userAuthTokenEntity.getUser().getRole();
 
+        //Making sure only admin or answer owner can delete question
         if (answerToBeDeleted.getUser().getUuid() != loggedInUserUuid && loggedInUserRole.equals("nonadmin"))
             throw new AuthorizationFailedException("ATHR-003", "Only the answer owner or admin can delete the answer");
         else
@@ -127,10 +134,13 @@ public class AnswerBusinessService {
     public List<AnswerEntity> getAllAnswersToQuestion(final String question_uuid,
                                                       final String authorisation) throws AuthorizationFailedException, InvalidQuestionException {
         authenticationService.validateToken(authorisation, "ATHR-002", "User is signed out.Sign in first to get the answers");
+
+        //Get question from questionDAO and throw InvalidQuestionException if ques does not exist
         QuestionEntity question = questionDao.getQuestionByuuid(question_uuid);
         if (question == null)
             throw new InvalidQuestionException("QUES-001", "The question entered is invalid");
 
+        //Return list of answers using answerDAO by passing UUID of respective question
         List<AnswerEntity> getAllAnswers = answerDao.getAllAnswersToQuestion(question_uuid);
         return getAllAnswers;
     }
@@ -142,6 +152,7 @@ public class AnswerBusinessService {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public QuestionEntity getQuestion(final String question_uuid) throws InvalidQuestionException {
+        //Please use getQuestionByUUID method from QuestionDAO instead.
         QuestionEntity question = questionDao.getQuestionByuuid(question_uuid);
         if (question == null)
             throw new InvalidQuestionException("QUES-001", "The question entered is invalid");

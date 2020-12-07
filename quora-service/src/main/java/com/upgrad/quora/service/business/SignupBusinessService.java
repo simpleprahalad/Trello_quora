@@ -22,10 +22,14 @@ public class SignupBusinessService {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public UserEntity signup(UserEntity userEntity) {
+
+        //Sign up the user by encrypting and setting password with salt
         String password = userEntity.getPassword();
         String[] encryptedText = cryptographyProvider.encrypt(password);
         userEntity.setSalt(encryptedText[0]);
         userEntity.setPassword(encryptedText[1]);
+
+        //call to persist userEntity in user table in database and return that user entity
         return userDao.createUser(userEntity);
     }
 
@@ -34,6 +38,7 @@ public class SignupBusinessService {
      * @return
      */
     public UserEntity getUserByUserName(final String userName) {
+        //Get user by username from the userDAO
         return userDao.getUserByUserName(userName);
     }
 
@@ -42,6 +47,7 @@ public class SignupBusinessService {
      * @return
      */
     public UserEntity getUserByEmail(final String email) {
+        //Get user by username from the userDAO
         return userDao.getUserByEmail(email);
     }
 }

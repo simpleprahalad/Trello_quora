@@ -29,14 +29,19 @@ public class AdminBusinessService {
     @Transactional(propagation = Propagation.REQUIRED)
     public UserEntity deleteUser(final String userUuid, final String authorizationToken)
             throws AuthorizationFailedException, UserNotFoundException {
+
+        //Authenticate the user auth token passed as parameter using authenticationService
         UserAuthTokenEntity userAuthTokenEntity = authenticationService.validateToken(authorizationToken,
                 "ATHR-002", "User is signed out.");
 
+        //If user is non admin - throw AuthorizationFailedException
         if (userAuthTokenEntity.getUser().getRole().equals("nonadmin")) {
             throw new AuthorizationFailedException("ATHR-003", "Unauthorized Access, Entered user is not an admin");
         }
 
+        //Else delete user using userDAO
         UserEntity userEntity = userDao.deleteUser(userUuid);
+        //If user does not exist in database throw UserNotFoundException
         if (userEntity == null) {
             throw new UserNotFoundException("USR-001", "User with entered uuid to be deleted does not exist");
         } else {

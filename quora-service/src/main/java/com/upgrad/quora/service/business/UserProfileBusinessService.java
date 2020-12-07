@@ -29,8 +29,12 @@ public class UserProfileBusinessService {
             UserNotFoundException {
         UserAuthTokenEntity userAuthTokenEntity = authenticationService.validateToken(authorizationToken,
                 "ATHR-002", "User is signed out.Sign in first to get user details");
+
+        //Get user from userDAO.
         UserEntity userEntity = userDao.getUserByUuid(userUuid);
 
+        //Throw UserNotFoundException if user with given UUID does not exist in database
+        //Else return the respective userEntity
         if (userEntity == null) {
             throw new UserNotFoundException("USR-001", "User with entered uuid does not exist");
         } else {

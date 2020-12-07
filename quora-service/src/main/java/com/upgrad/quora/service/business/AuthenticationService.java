@@ -15,6 +15,11 @@ import java.util.UUID;
 
 @Service
 public class AuthenticationService {
+
+    /**
+     * This class is used to validate and authenticate user auth token supplied by user to
+     * access most of the endpoints
+     */
     @Autowired
     private UserDao userDao;
     @Autowired
